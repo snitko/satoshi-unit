@@ -5,6 +5,12 @@ It provides a class, which objects would essentially represent an amount of bitc
 in the smallest possible denomination, which is Satoshi. You can then call methods on these objects
 to convert it various other denominations.
 
+### Installation
+
+    gem install satoshi-unit
+
+### Usage
+
 Here's how it might look:
 
     s = Satoshi.new(1) # By default, it accepts amounts in BTC denomination
