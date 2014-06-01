@@ -53,6 +53,14 @@ class Satoshi
     self.to_i < i
   end
 
+  def >=(i)
+    self.to_i >= i
+  end
+
+  def <=(i)
+    self.to_i <= i
+  end
+
   def ==(i)
     self.to_i == i
   end
@@ -63,6 +71,10 @@ class Satoshi
 
   def -(i)
     self.to_i - i
+  end
+
+  def *(i)
+    self.to_i * i
   end
 
   def coerce(other)
