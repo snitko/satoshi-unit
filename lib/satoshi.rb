@@ -33,6 +33,7 @@ class Satoshi
   end
 
   def to_i
+    return 0 if @value.nil?
     @value
   end
   alias :satoshi_value :to_i 

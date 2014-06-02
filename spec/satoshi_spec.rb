@@ -29,4 +29,10 @@ describe Satoshi do
     expect(Satoshi.new(100, unit: 'mbtc').to_i).to eq(10000000)
   end
 
+  it "treats nil in value as 0" do
+    expect(Satoshi.new < 1).to be_true
+    expect(Satoshi.new > 1).to be_false
+    expect(Satoshi.new == 0).to be_true
+  end
+
 end
