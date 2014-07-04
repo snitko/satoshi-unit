@@ -89,13 +89,15 @@ class Satoshi
   private
   
     def to_denomination(digits_after_delimiter)
-      return @value if digits_after_delimiter <= 0
-      leading_zeros = "0"*(18-@value.to_s.length)
-      result = leading_zeros + @value.to_s
+      sign  = @value < 0 ? -1 : 1
+      val   = @value.abs
+      return val if digits_after_delimiter <= 0
+      leading_zeros = "0"*(18-val.to_s.length)
+      result = leading_zeros + val.to_s
       result.reverse!
       result = result.slice(0..digits_after_delimiter-1) + '.' + result.slice(digits_after_delimiter..17)
       result.reverse!
-      result.sub(/\A0*/, '').sub(/0*\Z/, '').to_f # remove zeros on both sides
+      result.sub(/\A0*/, '').sub(/0*\Z/, '').to_f*sign # remove zeros on both sides
     end
 
     def convert_to_satoshi(n)

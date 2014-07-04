@@ -30,9 +30,13 @@ describe Satoshi do
   end
 
   it "treats nil in value as 0" do
-    expect(Satoshi.new < 1).to be_true
-    expect(Satoshi.new > 1).to be_false
-    expect(Satoshi.new == 0).to be_true
+    expect(Satoshi.new < 1).to be_truthy
+    expect(Satoshi.new > 1).to be_falsy
+    expect(Satoshi.new == 0).to be_truthy
+  end
+
+  it "converts negative values correctly" do
+    expect(Satoshi.new(-1.00, unit: :mbtc).to_btc).to eq(-0.001)
   end
 
 end
