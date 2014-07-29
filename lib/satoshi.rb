@@ -11,6 +11,7 @@ class Satoshi
   attr_reader :value, :from_unit, :to_unit
 
   def initialize(n=nil, from_unit: 'btc', to_unit: 'btc', unit: nil)
+    n = 0 if n.nil?
     if unit
       @from_unit = @to_unit = unit.downcase.to_sym
     else

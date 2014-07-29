@@ -39,4 +39,12 @@ describe Satoshi do
     expect(Satoshi.new(-1.00, unit: :mbtc).to_btc).to eq(-0.001)
   end
 
+  it "converts zero values correctly" do
+    expect(Satoshi.new(0, unit: :mbtc).to_unit).to eq(0)
+  end
+
+  it "converts nil values correctly" do
+    expect(Satoshi.new(nil, unit: :mbtc).to_unit).to eq(0)
+  end
+
 end
