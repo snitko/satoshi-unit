@@ -40,6 +40,7 @@ class Satoshi
   alias :satoshi_value :to_i 
 
   def value=(n)
+    n = 0 if n.nil?
     @value = convert_to_satoshi(n)
   end
 
