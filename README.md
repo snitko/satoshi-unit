@@ -33,7 +33,7 @@ specify your preferred denomination used througout the program in just one place
 (to be able to change it later):
 
     DENOMINATION = :mbtc
-    s = Satoshi.new(1, from_unit: DENOMINATION, from_unit: DENOMINATION)
+    s = Satoshi.new(1, from_unit: DENOMINATION, to_unit: DENOMINATION)
     s.to_unit # => 1.0 (in mBTC)
     
 This can be shortened to just the `:unit` option:
