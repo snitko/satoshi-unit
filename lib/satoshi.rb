@@ -21,16 +21,16 @@ class Satoshi
     @value = convert_to_satoshi(n) if n
   end
 
-  def to_btc
-    to_denomination(UNIT_DENOMINATIONS[:btc])
+  def to_btc(as: :number)
+    to_denomination(UNIT_DENOMINATIONS[:btc], as: as)
   end
 
-  def to_mbtc
-    to_denomination(UNIT_DENOMINATIONS[:mbtc])
+  def to_mbtc(as: :number)
+    to_denomination(UNIT_DENOMINATIONS[:mbtc], as: as)
   end
 
-  def to_unit
-    to_denomination(UNIT_DENOMINATIONS[@to_unit])
+  def to_unit(as: :number)
+    to_denomination(UNIT_DENOMINATIONS[@to_unit], as: as)
   end
 
   def to_i
@@ -90,7 +90,7 @@ class Satoshi
 
   private
   
-    def to_denomination(digits_after_delimiter)
+    def to_denomination(digits_after_delimiter, as: :number)
       sign  = @value < 0 ? -1 : 1
       val   = @value.abs
       return val if digits_after_delimiter <= 0
@@ -99,7 +99,13 @@ class Satoshi
       result.reverse!
       result = result.slice(0..digits_after_delimiter-1) + '.' + result.slice(digits_after_delimiter..17)
       result.reverse!
-      result.sub(/\A0*/, '').sub(/0*\Z/, '').to_f*sign # remove zeros on both sides
+      result = result.sub(/\A0*/, '').sub(/0*\Z/, '') # remove zeros on both sides
+      if as == :number
+        result.to_f*sign 
+      else
+        result = "0#{result}" if result =~ /\A\./
+        sign == -1 ? "-#{result}" : result
+      end
     end
 
     def convert_to_satoshi(n)
