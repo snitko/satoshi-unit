@@ -103,7 +103,11 @@ class Satoshi
       if as == :number
         result.to_f*sign 
       else
-        result = "0#{result}" if result =~ /\A\./
+        if result == '.'
+          result = '0.0'
+        elsif result =~ /\A\./
+          result = "0#{result}"
+        end
         sign == -1 ? "-#{result}" : result
       end
     end

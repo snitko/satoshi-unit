@@ -56,4 +56,9 @@ describe Satoshi do
     expect(one_satoshi.to_unit(as: :string)).to eq('0.00000001')
   end
 
+  it "displays zero Satoshi in human form, not math form" do
+    zero_satoshi = Satoshi.new(0, from_unit: :satoshi, to_unit: :btc)
+    expect(zero_satoshi.to_unit(as: :string)).to eq('0.0')
+  end
+
 end
