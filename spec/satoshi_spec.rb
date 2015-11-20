@@ -14,11 +14,12 @@ describe Satoshi do
     expect(Satoshi.new(1.00).to_btc).to eq(1)
     expect(Satoshi.new(1.08763).to_btc).to eq(1.08763)
     expect(Satoshi.new(1.08763).to_mbtc).to eq(1087.63)
+    expect(Satoshi.new(1.08763).to_bits).to eq(1087630.0)
     expect(Satoshi.new(-1.08763).to_mbtc).to eq(-1087.63)
     expect(Satoshi.new(0.00000001).to_i).to eq(1)
     expect(Satoshi.new(0.00000001).to_mbtc).to eq(0.00001)
   end
-   
+
   it "converts from various source denominations" do
     expect(Satoshi.new(1, unit: 'mbtc').to_btc).to      eq(0.001)
     expect(Satoshi.new(1, unit: 'mbtc').to_unit).to     eq(1)
