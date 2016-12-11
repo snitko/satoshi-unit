@@ -5,6 +5,7 @@ class Satoshi
   UNIT_DENOMINATIONS = {
     btc:     8,
     mbtc:    5,
+    bits:    2,
     satoshi: 0
   }
 
@@ -29,6 +30,10 @@ class Satoshi
     to_denomination(UNIT_DENOMINATIONS[:mbtc], as: as)
   end
 
+  def to_bits(as: :number)
+    to_denomination(UNIT_DENOMINATIONS[:bits], as: as)
+  end
+
   def to_unit(as: :number)
     to_denomination(UNIT_DENOMINATIONS[@to_unit], as: as)
   end
@@ -37,7 +42,7 @@ class Satoshi
     return 0 if @value.nil?
     @value
   end
-  alias :satoshi_value :to_i 
+  alias :satoshi_value :to_i
 
   def to_s
     to_unit.to_s
@@ -93,7 +98,7 @@ class Satoshi
   end
 
   private
-  
+
     def to_denomination(digits_after_delimiter, as: :number)
       sign  = @value < 0 ? -1 : 1
       val   = @value.abs
@@ -105,7 +110,7 @@ class Satoshi
       result.reverse!
       result = result.sub(/\A0*/, '').sub(/0*\Z/, '') # remove zeros on both sides
       if as == :number
-        result.to_f*sign 
+        result.to_f*sign
       else
         if result == '.'
           result = '0.0'
@@ -118,9 +123,9 @@ class Satoshi
 
     def convert_to_satoshi(n)
       n = ("%.#{UNIT_DENOMINATIONS[@from_unit]}f" % n) # otherwise we might see a scientific notation
-      n = n.split('.') 
+      n = n.split('.')
       n[1] ||= '' # in the case where there's no decimal part
-      n[1] += "0"*(UNIT_DENOMINATIONS[@from_unit]-n[1].length) if n[1] 
+      n[1] += "0"*(UNIT_DENOMINATIONS[@from_unit]-n[1].length) if n[1]
       n.join.to_i
     end
 
