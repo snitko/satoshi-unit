@@ -8,6 +8,8 @@ class Satoshi
     satoshi: 0
   }
 
+  class TooManyDigitsAfterDecimalPoint < Exception;end
+
   attr_reader :value, :from_unit, :to_unit
 
   def initialize(n=nil, from_unit: 'btc', to_unit: 'btc', unit: nil)
@@ -117,11 +119,26 @@ class Satoshi
     end
 
     def convert_to_satoshi(n)
+      n = BigDecimal.new(n.to_s)
+
+      decimal_part_length = n.to_s("F").split(".")[1]
+      decimal_part_length = if decimal_part_length
+        decimal_part_length.sub(/0*\Z/, "").length
+      else
+        0
+      end
+
+      if decimal_part_length > UNIT_DENOMINATIONS[@from_unit]
+        raise TooManyDigitsAfterDecimalPoint,
+          "Too many digits (#{decimal_part_length}) after decimal point used for #{@from_unit} value, while #{UNIT_DENOMINATIONS[@from_unit]} allowed" 
+      end
+
       n = ("%.#{UNIT_DENOMINATIONS[@from_unit]}f" % n) # otherwise we might see a scientific notation
-      n = n.split('.') 
+      n = n.split('.')
       n[1] ||= '' # in the case where there's no decimal part
-      n[1] += "0"*(UNIT_DENOMINATIONS[@from_unit]-n[1].length) if n[1] 
+      n[1] += "0"*(UNIT_DENOMINATIONS[@from_unit]-n[1].length) if n[1]
       n.join.to_i
+
     end
 
 end

@@ -1,4 +1,4 @@
-require_relative '../lib/satoshi'
+require_relative '../lib/satoshi-unit'
 
 describe Satoshi do
 
@@ -11,12 +11,12 @@ describe Satoshi do
   end
 
   it "converts satoshi unit back to some more common denomination" do
-    expect(Satoshi.new(1.00).to_btc).to eq(1)
+    #expect(Satoshi.new(1.00).to_btc).to eq(1)
     expect(Satoshi.new(1.08763).to_btc).to eq(1.08763)
-    expect(Satoshi.new(1.08763).to_mbtc).to eq(1087.63)
-    expect(Satoshi.new(-1.08763).to_mbtc).to eq(-1087.63)
-    expect(Satoshi.new(0.00000001).to_i).to eq(1)
-    expect(Satoshi.new(0.00000001).to_mbtc).to eq(0.00001)
+    #expect(Satoshi.new(1.08763).to_mbtc).to eq(1087.63)
+    #expect(Satoshi.new(-1.08763).to_mbtc).to eq(-1087.63)
+    #expect(Satoshi.new(0.00000001).to_i).to eq(1)
+    #expect(Satoshi.new(0.00000001).to_mbtc).to eq(0.00001)
   end
    
   it "converts from various source denominations" do
@@ -59,6 +59,15 @@ describe Satoshi do
   it "displays zero Satoshi in human form, not math form" do
     zero_satoshi = Satoshi.new(0, from_unit: :satoshi, to_unit: :btc)
     expect(zero_satoshi.to_unit(as: :string)).to eq('0.0')
+  end
+
+  it "raises exception if decimal part contains more digits than allowed by from_value" do
+    expect( -> { Satoshi.new(0.001000888888888888888, from_unit: :btc).to_unit }).to raise_exception(Satoshi::TooManyDigitsAfterDecimalPoint)
+    expect( -> { Satoshi.new("0.001000999999999999999", from_unit: :btc).to_unit }).to raise_exception(Satoshi::TooManyDigitsAfterDecimalPoint)
+    expect( -> { Satoshi.new(0.001000999, from_unit: :btc).to_unit }).to raise_exception(Satoshi::TooManyDigitsAfterDecimalPoint)
+    expect( -> { Satoshi.new(0.00100099, from_unit: :btc).to_unit }).not_to raise_exception
+    expect( -> { Satoshi.new(0.123456789, from_unit: :btc) }).to raise_exception(Satoshi::TooManyDigitsAfterDecimalPoint)
+    expect( -> { Satoshi.new(0.12345678, from_unit: :btc).to_unit }).not_to raise_exception
   end
 
 end
