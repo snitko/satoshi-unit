@@ -11,12 +11,12 @@ describe Satoshi do
   end
 
   it "converts satoshi unit back to some more common denomination" do
-    #expect(Satoshi.new(1.00).to_btc).to eq(1)
+    expect(Satoshi.new(1.00).to_btc).to eq(1)
     expect(Satoshi.new(1.08763).to_btc).to eq(1.08763)
-    #expect(Satoshi.new(1.08763).to_mbtc).to eq(1087.63)
-    #expect(Satoshi.new(-1.08763).to_mbtc).to eq(-1087.63)
-    #expect(Satoshi.new(0.00000001).to_i).to eq(1)
-    #expect(Satoshi.new(0.00000001).to_mbtc).to eq(0.00001)
+    expect(Satoshi.new(1.08763).to_mbtc).to eq(1087.63)
+    expect(Satoshi.new(-1.08763).to_mbtc).to eq(-1087.63)
+    expect(Satoshi.new(0.00000001).to_i).to eq(1)
+    expect(Satoshi.new(0.00000001).to_mbtc).to eq(0.00001)
   end
    
   it "converts from various source denominations" do
@@ -68,6 +68,7 @@ describe Satoshi do
     expect( -> { Satoshi.new(0.00100099, from_unit: :btc).to_unit }).not_to raise_exception
     expect( -> { Satoshi.new(0.123456789, from_unit: :btc) }).to raise_exception(Satoshi::TooManyDigitsAfterDecimalPoint)
     expect( -> { Satoshi.new(0.12345678, from_unit: :btc).to_unit }).not_to raise_exception
+    expect( -> { Satoshi.new(nil, from_unit: :btc).to_unit }).not_to raise_exception
   end
 
 end
