@@ -9,6 +9,7 @@ class Satoshi
   }
 
   class TooManyDigitsAfterDecimalPoint < Exception;end
+  class TooLarge                       < Exception;end
 
   attr_reader :value, :from_unit, :to_unit
 
@@ -137,6 +138,11 @@ class Satoshi
       n = n.split('.')
       n[1] ||= '' # in the case where there's no decimal part
       n[1] += "0"*(UNIT_DENOMINATIONS[@from_unit]-n[1].length) if n[1]
+
+      if(n.join.to_i > 21_000_000_00000000)
+        raise TooLarge, "Max value for Bitcoin is 21 million BTC"
+      end
+
       n.join.to_i
 
     end

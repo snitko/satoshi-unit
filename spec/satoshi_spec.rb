@@ -71,4 +71,9 @@ describe Satoshi do
     expect( -> { Satoshi.new(nil, from_unit: :btc).to_unit }).not_to raise_exception
   end
 
+  it "disallows to create values more than 21mil BTC" do
+    expect( -> { Satoshi.new(21_000_001) }).to raise_exception(Satoshi::TooLarge)
+    expect( -> { Satoshi.new(21_000_000) }).not_to raise_exception
+  end
+
 end
