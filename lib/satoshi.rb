@@ -76,15 +76,29 @@ class Satoshi
   end
 
   def +(i)
-    self.to_i + i
+    if i.kind_of?(Satoshi)
+      Satoshi.new(self.to_i + i, from_unit: :satoshi)
+    else
+      self.to_i + i
+    end
   end
 
   def -(i)
-    self.to_i - i
+    if i.kind_of?(Satoshi)
+      Satoshi.new(self.to_i - i, from_unit: :satoshi)
+    else
+      self.to_i - i
+    end
   end
 
+  # IMPORTANT: multiplication is done on satoshis, not btc.
+  # 0.01*0.02 BTC will be a larger value.
   def *(i)
-    self.to_i * i
+    if i.kind_of?(Satoshi)
+      Satoshi.new(self.to_i * i, from_unit: :satoshi)
+    else
+      self.to_i * i
+    end
   end
 
   def coerce(other)

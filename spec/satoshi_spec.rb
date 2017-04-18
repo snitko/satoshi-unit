@@ -76,4 +76,15 @@ describe Satoshi do
     expect( -> { Satoshi.new(21_000_000) }).not_to raise_exception
   end
 
+  it "returns satoshi for +,- and * methods if both operands are Satoshi" do
+    s1 = Satoshi.new(0.001, from_unit: :btc)
+    s2 = Satoshi.new(0.002, from_unit: :btc)
+    expect(s1+s2).to be_kind_of(Satoshi)
+    expect((s1+s2).to_unit).to eq(0.003)
+    expect(s2-s1).to be_kind_of(Satoshi)
+    expect((s2-s1).to_unit).to eq(0.001)
+    expect(s2*s1).to be_kind_of(Satoshi)
+    expect((s2*s1).to_unit).to eq(200)
+  end
+
 end
