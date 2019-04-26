@@ -40,7 +40,7 @@ class Satoshi
     return 0 if @value.nil?
     @value
   end
-  alias :satoshi_value :to_i 
+  alias :satoshi_value :to_i
 
   def to_s
     to_unit.to_s
@@ -110,7 +110,7 @@ class Satoshi
   end
 
   private
-  
+
     def to_denomination(digits_after_delimiter, as: :number)
       sign  = @value < 0 ? -1 : 1
       val   = @value.abs
@@ -122,7 +122,7 @@ class Satoshi
       result.reverse!
       result = result.sub(/\A0*/, '').sub(/0*\Z/, '') # remove zeros on both sides
       if as == :number
-        result.to_f*sign 
+        result.to_f*sign
       else
         if result == '.'
           result = '0.0'
@@ -136,8 +136,8 @@ class Satoshi
     def convert_to_satoshi(n)
       n = BigDecimal.new(n.to_s)
 
-      decimal_part_length = n.to_s("F").split(".")[1]
-      decimal_part_length = if decimal_part_length
+      decimal_part = n.to_s("F").split(".")[1]
+      decimal_part_length = if decimal_part
         decimal_part_length.sub(/0*\Z/, "").length
       else
         0
@@ -145,7 +145,7 @@ class Satoshi
 
       if decimal_part_length > UNIT_DENOMINATIONS[@from_unit]
         raise TooManyDigitsAfterDecimalPoint,
-          "Too many digits (#{decimal_part_length}) after decimal point used for #{@from_unit} value, while #{UNIT_DENOMINATIONS[@from_unit]} allowed" 
+          "Too many digits (#{decimal_part_length}) after decimal point used for #{@from_unit} value, while #{UNIT_DENOMINATIONS[@from_unit]} allowed"
       end
 
       n = ("%.#{UNIT_DENOMINATIONS[@from_unit]}f" % n) # otherwise we might see a scientific notation
